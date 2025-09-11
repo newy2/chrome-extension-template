@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Naver BrandConnect Link Generator",
+  "version": "1.2",
+  "permissions": [
+    "tabs",
+    "scripting",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "*://*.brand.naver.com/*"
+  ],
+  "background": {
+    "service_worker": "./background.js"
+  },
+  "commands": {
+    "generate-link": {
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "브랜드 커넥트 링크 생성"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://m.brand.naver.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
