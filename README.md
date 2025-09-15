@@ -9,7 +9,7 @@
 사용자 경험 향상을 위해 `stale-while-revalidate` 캐시 전략을 참고하여, `라이센스 검증 여부`는 동기 함수로 조회하고, `라이센스 검증 API`는 비동기 함수로 호출하는 기능을 구현한다. 
 
 
-<img src="docs/SingleCache.png" width="600">
+<img src="docs/SingleCache.png">
 
 ### SingleCache
 - 라이센스 검증 결과를 SingleCache 의 CacheEntry 에 보관하여 사용한다.
