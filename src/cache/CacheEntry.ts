@@ -15,4 +15,11 @@ export class CacheEntry<T> {
   getValue() {
     return this.value;
   }
+
+  toJson() {
+    return {
+      value: this.value,
+      expiredAt: this.expiredAt
+    }
+  }
 }

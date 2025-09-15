@@ -4,6 +4,7 @@ import type {CacheDataSource} from "./CacheDataSource.ts";
 export class SingleCache<T> {
   private cacheEntry: CacheEntry<T>;
   private dataSource: CacheDataSource<T>;
+  private onRefreshed: (cacheEntry: CacheEntry<T>) => Promise<void> = async () => {};
 
   constructor(defaultValue: CacheEntry<T>, dataSource: CacheDataSource<T>) {
     this.cacheEntry = defaultValue;
@@ -19,10 +20,18 @@ export class SingleCache<T> {
   }
 
   private async onMiss() {
-    this.cacheEntry = await this.dataSource.refresh() || this.cacheEntry;
+    const newCacheEntry = await this.dataSource.refresh();
+    if (newCacheEntry) {
+      void this.onRefreshed(newCacheEntry);
+      this.cacheEntry = newCacheEntry;
+    }
   }
 
   getCacheEntry() {
     return this.cacheEntry;
+  }
+
+  setOnRefreshed(onRefreshed: (cacheEntry: CacheEntry<T>) => Promise<void>) {
+    this.onRefreshed = onRefreshed;
   }
 }

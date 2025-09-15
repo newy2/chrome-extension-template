@@ -77,6 +77,21 @@ describe("SingleCache", () => {
         assertEquals(1, dataGenerator.callCount, "캐시가 최신화된 경우, DataGenerator#generate 메서드를 호출하지 않는다");
         assertEquals("NEW", newValue);
       });
+
+      it("캐시가 최신화 된 경우, onRefreshed 콜벡이 호출된다", async () => {
+        let isRefreshed = false;
+        singleCache.setOnRefreshed(async () => {
+          isRefreshed = true;
+        });
+
+        singleCache.get(Date.parse(requestAt));
+        assertFalse(isRefreshed);
+
+        await waitForMillis(1); // 캐시 최신화 대기
+
+        singleCache.get(Date.parse(requestAt));
+        assertTrue(isRefreshed);
+      });
     });
 
     describe("공통 기능", () => {
@@ -151,5 +166,9 @@ describe("CacheEntry", () => {
 
   it("값 조회하기", () => {
     assertEquals("OLD", entry.getValue());
+  });
+
+  it("LocalStorage 저장용 JSON 반환하기", () => {
+    assertDeepEquals({value: "OLD", expiredAt: Date.parse("2025-09-12T10:53:23.000Z")}, entry.toJson());
   });
 });
