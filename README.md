@@ -12,11 +12,12 @@
 <img src="docs/SingleCache.png">
 
 ### SingleCache
-- `라이센스 검증 여부`를 SingleCache 으로 조회한다. `SingleCache#get`는 동기 함수로 `CacheEntry#getValue`를 즉시 반환한다.
+- `라이센스 검증 여부`는 SingleCache 을 사용하여 조회하고 최신화 한다.
+- `SingleCache#get`는 동기 함수로 `CacheEntry#getValue`를 즉시 반환하고, `CacheEntry`가 만료된 경우 비동기로 데이터 최신화를 요청한다.
 
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/__tests__/cache/Cache.test.ts#L70-L80
 
-- SingleCache#get 는 CacheEntry 가 만료된 경우, DataSource#refresh 로 CacheEntry 를 최신화 한다.
+- `SingleCache#get` 는 CacheEntry 가 만료된 경우, DataSource#refresh 로 CacheEntry 를 최신화 한다.
 
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/cache/SingleCache.ts#L16-L22
   
