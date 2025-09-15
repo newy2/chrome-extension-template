@@ -2,7 +2,8 @@ import {beforeEach, describe, it} from "vitest";
 import {assertDeepEquals, assertEquals, assertFalse, assertTrue} from "../helper/Assertions.ts";
 import {CacheEntry} from "../../src/cache/CacheEntry.ts";
 import {SingleCache} from "../../src/cache/SingleCache.ts";
-import {CacheDataSource, type DataGenerator} from "../../src/cache/CacheDataSource.ts";
+import {DataSource} from "../../src/cache/DataSource.ts";
+import type {DataFetcher} from "../../src/cache/DataFetcher.ts";
 
 function waitForMillis(ms: number) {
   return new Promise(resolve => {
@@ -10,19 +11,19 @@ function waitForMillis(ms: number) {
   });
 }
 
-class SimpleDataGenerator implements DataGenerator<string> {
+class SimpleDataGenerator implements DataFetcher<string> {
   callCount = 0;
 
-  async generate(): Promise<CacheEntry<string> | void> {
+  async fetch(): Promise<CacheEntry<string> | void> {
     this.callCount++;
     return new CacheEntry("NEW", Date.parse("2025-09-14"));
   }
 }
 
-class ErrorDataGenerator implements DataGenerator<string> {
+class ErrorDataGenerator implements DataFetcher<string> {
   callCount = 0;
 
-  async generate(): Promise<CacheEntry<string> | void> {
+  async fetch(): Promise<CacheEntry<string> | void> {
     this.callCount++;
     throw new Error("Generate Error!");
   }
@@ -35,8 +36,8 @@ describe("SingleCache", () => {
     return new CacheEntry(cachedValue, expiredAt);
   }
 
-  const newSingleCache = (dataGenerator: DataGenerator<string>) => {
-    return new SingleCache(newDefaultCacheValue(), new CacheDataSource(dataGenerator));
+  const newSingleCache = (dataGenerator: DataFetcher<string>) => {
+    return new SingleCache(newDefaultCacheValue(), new DataSource(dataGenerator));
   }
   
   describe("DataGenerator 에서 에러가 발생하지 않는 경우", () => {
@@ -120,7 +121,7 @@ describe("SingleCache", () => {
 describe("CacheDataSource", () => {
   describe("Cache 데이터 생성하기", () => {
     it("Promise 를 소비하지 않은 경우, 같은 Promise 를 반환한다.", async () => {
-      const dataSource = new CacheDataSource(new SimpleDataGenerator());
+      const dataSource = new DataSource(new SimpleDataGenerator());
       const value1 = dataSource.refresh();
       const value2 = dataSource.refresh();
 
@@ -130,7 +131,7 @@ describe("CacheDataSource", () => {
     });
 
     it("Promise 를 소비한 경우, 새로운 Promise 를 반환한다.", async () => {
-      const dataSource = new CacheDataSource(new SimpleDataGenerator());
+      const dataSource = new DataSource(new SimpleDataGenerator());
       const value1 = dataSource.refresh();
       await value1; // Promise 를 소비한다.
       const value2 = dataSource.refresh();
@@ -143,7 +144,7 @@ describe("CacheDataSource", () => {
 
   describe("Cache 데이터 생성중 에러가 발생한 경우", () => {
     it("에러가 발생한 경우, falsy 값을 반환한다.", async () => {
-      const errorDataSource = new CacheDataSource(new ErrorDataGenerator());
+      const errorDataSource = new DataSource(new ErrorDataGenerator());
       assertFalse(await errorDataSource.refresh());
     });
   });

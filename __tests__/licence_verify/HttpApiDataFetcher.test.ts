@@ -1,7 +1,8 @@
 import {describe, it} from "vitest";
 import {CacheEntry} from "../../src/cache/CacheEntry.ts";
 import {assertEquals, assertFalse, assertTrue,} from "../helper/Assertions.ts";
-import {type HttpApiCommand, HttpApiDataGenerator} from "../../src/licence_verify/HttpApiDataGenerator.ts";
+import {HttpApiDataFetcher} from "../../src/licence_verify/HttpApiDataFetcher.ts";
+import type {HttpApiCommand} from "../../src/licence_verify/HttpApiComand.ts";
 
 describe("HttpApiDataGenerator", () => {
   it("응답 상태가 200 인 경우, response 의 maxAgeAt 을 사용한다", async () => {
@@ -14,8 +15,8 @@ describe("HttpApiDataGenerator", () => {
       })
     };
 
-    const dataSource = new HttpApiDataGenerator(success);
-    const response = await dataSource.generate() as CacheEntry<string>;
+    const dataSource = new HttpApiDataFetcher(success);
+    const response = await dataSource.fetch() as CacheEntry<string>;
 
     assertEquals("", response.getValue());
     assertFalse(response.isExpired(Date.parse("2025-09-12T10:53:22.999Z")));
@@ -33,10 +34,10 @@ describe("HttpApiDataGenerator", () => {
       })
     };
 
-    const dataSource = new HttpApiDataGenerator(notFoundServer);
+    const dataSource = new HttpApiDataFetcher(notFoundServer);
 
     const requestAt = Date.parse("2025-09-12T10:53:23.000Z");
-    const response = await dataSource.generate(requestAt) as CacheEntry<string>;
+    const response = await dataSource.fetch(requestAt) as CacheEntry<string>;
 
     assertEquals("", response.getValue());
     assertFalse(response.isExpired(Date.parse("2025-09-13T10:53:22.999Z")));
@@ -54,10 +55,10 @@ describe("HttpApiDataGenerator", () => {
       })
     };
 
-    const dataSource = new HttpApiDataGenerator(serverError);
+    const dataSource = new HttpApiDataFetcher(serverError);
 
     const requestAt = Date.parse("2025-09-12T10:53:23.000Z");
-    const response = await dataSource.generate(requestAt) as CacheEntry<string>;
+    const response = await dataSource.fetch(requestAt) as CacheEntry<string>;
 
     assertEquals("", response.getValue());
     assertFalse(response.isExpired(Date.parse("2025-09-12T11:53:22.999Z")));
@@ -79,10 +80,10 @@ describe("HttpApiDataGenerator", () => {
       })
     };
 
-    const dataSource = new HttpApiDataGenerator(serverError);
+    const dataSource = new HttpApiDataFetcher(serverError);
 
     const requestAt = Date.parse("2025-09-12T10:53:23.000Z");
-    const response = await dataSource.generate(requestAt) as CacheEntry<string>;
+    const response = await dataSource.fetch(requestAt) as CacheEntry<string>;
 
     assertEquals("이미 사용중인 라이센스 입니다.", response.getValue());
     assertFalse(response.isExpired(Date.parse("2025-09-12T10:53:22.999Z")));

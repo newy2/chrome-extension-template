@@ -1,4 +1,4 @@
-import type {HttpApiCommand, HttpApiResponseType} from "./HttpApiDataGenerator.ts";
+import type {HttpApiCommand, HttpApiResponseType} from "./HttpApiComand.ts";
 
 export class HttpPostApiCommand implements HttpApiCommand {
   private readonly url: string;

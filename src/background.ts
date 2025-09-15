@@ -1,7 +1,7 @@
 import {LICENSE_API_KEY, LICENSE_API_URL} from "./config.ts";
 import {ChromeLocalStorageUtil} from "./uitl/ChromeLocalStorageUtil.ts";
-import {CacheDataSource} from "./cache/CacheDataSource.ts";
-import {HttpApiDataGenerator} from "./licence_verify/HttpApiDataGenerator.ts";
+import {DataSource} from "./cache/DataSource.ts";
+import {HttpApiDataFetcher} from "./licence_verify/HttpApiDataFetcher.ts";
 import {HttpPostApiCommand} from "./licence_verify/HttpPostApiCommand.ts";
 import {SingleCache} from "./cache/SingleCache.ts";
 
@@ -27,7 +27,7 @@ let licenseInvalidMessage: SingleCache<string>;
 async function getLicenseInvalidMessageCache() {
   if (!licenseInvalidMessage) {
     const defaultValue = await ChromeLocalStorageUtil.getLicenceCacheEntry();
-    const dataSource = new CacheDataSource(new HttpApiDataGenerator(new HttpPostApiCommand(LICENSE_API_URL + "/verify", {
+    const dataSource = new DataSource(new HttpApiDataFetcher(new HttpPostApiCommand(LICENSE_API_URL + "/verify", {
       licenceKey: LICENSE_API_KEY,
       userAccessKey: await ChromeLocalStorageUtil.getUserAccessKey()
     })));

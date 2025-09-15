@@ -1,12 +1,14 @@
 import {CacheEntry} from "./CacheEntry.ts";
-import type {CacheDataSource} from "./CacheDataSource.ts";
+import type {DataSource} from "./DataSource.ts";
+
+type OnRefreshCallbackType<T> = (cacheEntry: CacheEntry<T>) => Promise<void>;
 
 export class SingleCache<T> {
   private cacheEntry: CacheEntry<T>;
-  private dataSource: CacheDataSource<T>;
-  private onRefreshed: (cacheEntry: CacheEntry<T>) => Promise<void> = async () => {};
+  private dataSource: DataSource<T>;
+  private onRefreshed: OnRefreshCallbackType<T> = async () => {};
 
-  constructor(defaultValue: CacheEntry<T>, dataSource: CacheDataSource<T>) {
+  constructor(defaultValue: CacheEntry<T>, dataSource: DataSource<T>) {
     this.cacheEntry = defaultValue;
     this.dataSource = dataSource;
   }
@@ -31,7 +33,7 @@ export class SingleCache<T> {
     return this.cacheEntry;
   }
 
-  setOnRefreshed(onRefreshed: (cacheEntry: CacheEntry<T>) => Promise<void>) {
+  setOnRefreshed(onRefreshed: OnRefreshCallbackType<T>) {
     this.onRefreshed = onRefreshed;
   }
 }
