@@ -19,7 +19,7 @@ https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd
 
 - `SingleCache#get` 는 CacheEntry 가 만료된 경우, DataSource#refresh 로 CacheEntry 를 최신화 한다.
 
-https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/cache/SingleCache.ts#L16-L22
+https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/cache/SingleCache.ts#L24-L30
   
 - SingleCache#setOnRefreshed 는 CacheEntry 값을 Chrome Local Storage 에 저장하기 위해 사용한다. (서비스 워커 비황성화 대비)
  
