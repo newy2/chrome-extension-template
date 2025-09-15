@@ -4,8 +4,7 @@
 ## 문제해결
 ### 라이센스 검증 API 캐시
 
-`라이센스 검증 API`는 AWS Lambda Function URL 로 구현됐고, 콜드 스타트로 AWS Lambda 가 실행되는 경우, 응답 시간은 평균 2초 정도 걸린다.
-
+`라이센스 검증 API`는 AWS Lambda Function URL 로 구현됐고, 콜드 스타트로 AWS Lambda 가 실행되는 경우, 응답 시간은 평균 2초 정도 걸린다. 
 사용자 경험 향상을 위해 `stale-while-revalidate` 캐시 전략을 참고하여, `라이센스 검증 여부`는 동기 함수로 조회하고, `라이센스 검증 API`는 비동기 함수로 호출하는 기능을 구현한다. 
 
 
