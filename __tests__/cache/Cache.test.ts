@@ -81,8 +81,10 @@ describe("SingleCache", () => {
 
       it("캐시가 최신화 된 경우, onRefreshed 콜벡이 호출된다", async () => {
         let isRefreshed = false;
-        singleCache.setOnRefreshed(async () => {
+        let newCacheEntry: CacheEntry<string>;
+        singleCache.setOnRefreshed(async (newValue) => {
           isRefreshed = true;
+          newCacheEntry = newValue;
         });
 
         singleCache.get(Date.parse(requestAt));
@@ -92,12 +94,7 @@ describe("SingleCache", () => {
 
         singleCache.get(Date.parse(requestAt));
         assertTrue(isRefreshed);
-      });
-    });
-
-    describe("공통 기능", () => {
-      it("local storage 저장을 위해, 현재 CacheEntry 를 추출한다", () => {
-        assertDeepEquals({ value: "OLD", expiredAt: Date.parse("2025-09-12")}, singleCache.getCacheEntry());
+        assertEquals("NEW", newCacheEntry!.getValue());
       });
     });
   });

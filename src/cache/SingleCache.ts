@@ -29,10 +29,6 @@ export class SingleCache<T> {
     }
   }
 
-  getCacheEntry() {
-    return this.cacheEntry;
-  }
-
   setOnRefreshed(onRefreshed: OnRefreshCallbackType<T>) {
     this.onRefreshed = onRefreshed;
   }
