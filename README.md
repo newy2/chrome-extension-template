@@ -21,7 +21,7 @@ https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd
 
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/cache/SingleCache.ts#L24-L30
   
-- SingleCache#setOnRefreshed 는 CacheEntry 값을 Chrome Local Storage 에 저장하기 위해 사용한다. (서비스 워커 비황성화 대비)
+- 서비스 워커는 언제든 비활성화 될 수 있기 때문에, `SingleCache`가 메모리에서 해제될 수 있다. `SingleCache#setOnRefreshed`를 사용하여 `CacheEntry`를 Chrome Local Storage 에 저장한다.
  
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/background.ts#L35-L37
 
