@@ -17,7 +17,7 @@
 
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/__tests__/cache/Cache.test.ts#L70-L80
 
-- `SingleCache#get` 는 CacheEntry 가 만료된 경우, DataSource#refresh 로 CacheEntry 를 최신화 한다.
+- `SingleCache#get` 는 CacheEntry 가 만료된 경우, `DataSource#refresh`로 `CacheEntry`를 최신화 한다.
 
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/cache/SingleCache.ts#L24-L30
   
