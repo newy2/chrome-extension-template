@@ -26,7 +26,7 @@ https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/src/background.ts#L35-L37
 
 ### DataSource
-- `DataSource#refresh`는 `CacheEntry` 최신화 작업을 Promise 로 반환하고, `DataSource.fetching`에 저장하여 재사용한다.
+- `DataSource#refresh`는 `CacheEntry` 최신화 작업을 Promise 로 반환하고, Promise 가 소비되기 전까지 같은 Promise 를 반환한다.
 
 https://github.com/newy2/chrome-extension-template/blob/7c1b0ece8f467eb8078a94fd43e742a4abe70d9f/__tests__/cache/Cache.test.ts#L120-L128
 
